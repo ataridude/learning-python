@@ -13,11 +13,11 @@ board = {
 }
 
 def print_board():
-    print(board["top-L"]+"|" + board["top-C"]+"|" + board["top-R"])
+    print("%s|%s|%s" % (board["top-L"], board["top-C"], board["top-R"]))
     print("-+-+-")
-    print(board["mid-L"]+"|" + board["mid-C"]+"|" + board["mid-R"])
+    print("%s|%s|%s" % (board["mid-L"], board["mid-C"], board["mid-R"]))
     print("-+-+-")
-    print(board["bot-L"]+"|" + board["bot-C"]+"|" + board["bot-R"])
+    print("%s|%s|%s" % (board["bot-L"], board["bot-C"], board["bot-R"]))
 
 def check_valid_move(move):
     valid_move = True
