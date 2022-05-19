@@ -20,8 +20,12 @@ def print_board():
     print(board["bot-L"]+"|" + board["bot-C"]+"|" + board["bot-R"])
 
 def check_valid_move(move):
-    space_occupied = board[move] != " "
-    return(not space_occupied)
+    valid_move = True
+    if(move not in board):
+        valid_move = False
+    if(valid_move and board[move] != " "):
+        valid_move = False
+    return(valid_move)
 
 def ask_move():
     global current_move, last_move
