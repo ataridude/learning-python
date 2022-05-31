@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import shelve
+
 board = {
     "top-L": " ",
     "top-C": " ",
@@ -27,19 +29,41 @@ def check_valid_move(move):
         valid_move = False
     return(valid_move)
 
+def save_game():
+    global board, last_move, current_move
+    shelfFile = shelve.open("savegame.ttt")
+    shelfFile['board'] = board
+    shelfFile['last_move'] = last_move
+    shelfFile['current_move'] = current_move
+    shelfFile.close()
+
+def do_load_game():
+    global board, last_move, current_move
+    shelfFile = shelve.open("savegame.ttt")
+    board = shelfFile['board']
+    last_move = shelfFile['last_move']
+    current_move = shelfFile['current_move']
+    shelfFile.close()
+
+def check_save_game(move):
+    if("save" == move):
+        save_game()
+        exit()
+
 def ask_move():
     global current_move, last_move
-    current_move, last_move = last_move, current_move
     turn_over = False
     while(not turn_over):
         print(current_move.upper() + "'s move. Specify {top,mid,bot}-{L,C,R}")
         move = input()
+        check_save_game(move)
         valid_move = check_valid_move(move)
         if(valid_move):
             board[move] = current_move
             turn_over = True
         else:
             print("Invalid move.  Choose another space.")
+    current_move, last_move = last_move, current_move
 
 def check_win():
     win = False
@@ -78,9 +102,16 @@ def check_over():
         print("Game over.  "+current_move+" wins.")
     return(not(full) and not(win))
 
+def ask_load_game():
+    print("Load saved game? (Y = yes)")
+    load_game = input()
+    if("Y" == load_game):
+        do_load_game()
+
 last_move = "x"
 current_move = "o"
 game_not_over = True
+ask_load_game()
 while(game_not_over):
     print_board()
     ask_move()
